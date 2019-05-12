@@ -1302,6 +1302,8 @@ static struct msm_vidc_format venc_formats[] = {
 	},
 };
 
+static int msm_venc_set_csc(struct msm_vidc_inst *inst);
+
 static int msm_venc_queue_setup(struct vb2_queue *q,
 				const struct v4l2_format *fmt,
 				unsigned int *num_buffers,

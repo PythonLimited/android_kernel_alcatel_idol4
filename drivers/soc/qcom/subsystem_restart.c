@@ -55,7 +55,7 @@ char panic_subsystem[16];
 #endif /* CONFIG_MSM_DLOAD_MODE */
 
 #define SHUTDOWN_ACK_MAX_LOOPS	50
-#define SHUTDOWN_ACK_DELAY	100
+#define SHUTDOWN_ACK_DELAY_MS	100
 
 /**
  * enum p_subsys_state - state of a subsystem (private)
@@ -569,7 +569,7 @@ int wait_for_shutdown_ack(struct subsys_desc *desc)
 	for (count = SHUTDOWN_ACK_MAX_LOOPS; count > 0; count--) {
 		if (gpio_get_value(desc->shutdown_ack_gpio))
 			return count;
-		msleep(SHUTDOWN_ACK_DELAY);
+		msleep(SHUTDOWN_ACK_DELAY_MS);
 	}
 
 	pr_err("[%s]: Timed out waiting for shutdown ack\n", desc->name);
