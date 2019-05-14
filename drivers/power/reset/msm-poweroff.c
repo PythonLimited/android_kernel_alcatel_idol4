@@ -218,9 +218,6 @@ static void halt_spmi_pmic_arbiter(void)
 
 static void msm_restart_prepare(const char *cmd)
 {
-#ifdef CONFIG_MSM_SUBSYSTEM_RESTART
-	extern char panic_subsystem[];
-#endif /* CONFIG_MSM_SUBSYSTEM_RESTART */
 	bool need_warm_reset = false;
 
 #ifdef CONFIG_MSM_DLOAD_MODE
@@ -284,25 +281,6 @@ static void msm_restart_prepare(const char *cmd)
 			__raw_writel(0x77665501, restart_reason);
 		}
 	}
-
-#ifdef CONFIG_MSM_SUBSYSTEM_RESTART
-	if (in_panic) {
-		printk(KERN_ERR "subsystem %s crash\n", panic_subsystem);
-		if (!memcmp(panic_subsystem, "modem", 5)) {
-			__raw_writel(0x6f656dc1, restart_reason);
-		} else if (!memcmp(panic_subsystem, "wcnss", 5)) {
-			__raw_writel(0x6f656dc2, restart_reason);
-		} else if (!memcmp(panic_subsystem, "adsp", 4) || !memcmp(panic_subsystem, "ADSP", 4)) {
-			__raw_writel(0x6f656dc3, restart_reason);
-		} else if (!memcmp(panic_subsystem, "venus", 5)) {
-			__raw_writel(0x6f656dc4, restart_reason);
-		} else {
-			__raw_writel(0x6f656dc0, restart_reason);
-		}
-		if (download_mode)
-			set_dload_mode(1);
-	}
-#endif /* CONFIG_MSM_SUBSYSTEM_RESTART */
 
 //add begin by liping.gao,Powering on mode switch to 9008 mode,task:665748
 	if (restart_mode == RESTART_DLOAD) {
